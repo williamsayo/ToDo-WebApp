@@ -1,0 +1,53 @@
+{% extends 'todoapp/base.html' %}
+
+{% block head %}
+    <title>Home</title>
+    <style>
+        .navbar{
+            display: none;
+        }
+
+        body{
+            background: url('/static/todoapp/home1.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            text-align: center;
+        }
+
+        .container{
+            padding-top: 180px;
+        }
+
+        h1{
+            color: white;
+        }
+
+        .container > .row p a button{
+            font-size: 1.6em;
+            padding-left: 40px;
+            padding-right: 40px;
+            color: black;
+        }
+
+        .fa-check-square{
+            font-size: 8em;
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+    
+<div class="container" >
+    <div class="row">
+        <div class="col text-center" >
+            <i class="fa fa-check-square shadow-lg"></i>
+            <h1 class="pt-0"> Get your daily affairs in order</h1>
+            <h1 class="pt-0"> Organize all your activities in one place</h1> <br>
+
+            <p><a href="{% url 'todolist' %}"><button type="button" class="btn btn-secondary btn-lg shadow-lg">Explore</button></a></p>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock content %}

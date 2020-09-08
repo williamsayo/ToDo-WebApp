@@ -1,0 +1,27 @@
+{% extends 'todoapp/base.html' %}
+
+{% block head %}
+    <title>Organize</title>
+{% endblock head %}
+
+{% block content %}
+    <form method="POST" action=".">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row mt-5">
+                <div class="input-group input-group-lg">
+                    <input type="date" name="date" value="{{todolist.date|date:'Y-m-d'}}" class=" pt-1 pb-1 pr-0 pr-0 mg-0 text-center">
+                    <div class="col-6 mr-0 pr-0">
+                        <input value="{{todolist.activity}}" placeholder="Add an activity" name="activity" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                    </div>
+                    <div class="col-4 ml-0 pl-0">
+                        <div class="input-group-append">
+                            <input class="pr-5 pl-5 btn btn-outline-primary" type="submit" value="Update" aria-describedby="inputGroup-sizing-lg" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </form>
+{% endblock content %}

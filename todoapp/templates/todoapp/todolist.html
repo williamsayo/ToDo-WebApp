@@ -1,0 +1,99 @@
+{% extends 'todoapp/base.html' %}
+
+{% block head %}
+    <title>Organize</title>
+{% endblock head %}
+
+{% block content %}
+    <form method="POST" action="{% url 'todolist' %}">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row mt-5">
+                <div class="input-group input-group-lg">
+                    <input type="date" name="date" value="{{date|date:'Y-m-d'}}" class=" pt-1 pb-1 pr-0 pr-0 mg-0 text-center">
+                    <div class="col-6 mr-0 pr-0">
+                        <input placeholder="Add an activity" name="activity" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                    </div>
+                    <div class="col-4 ml-0 pl-0">
+                        <div class="input-group-append">
+                            <input class="pr-5 pl-5 btn btn-outline-primary" type="submit" value="Add" aria-describedby="inputGroup-sizing-lg" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </form>
+
+
+    <div class="container">
+        <div class="row mt-5">
+            <table style="border: 0px solid transparent;" class=" bl-0 table table-bordered">
+                <thead>
+                  <tr class="row text-center">
+                    <th class="col-sm-2">Date</th>
+                    <th class="col-sm-6">Activity</th>
+                    <th class="col-sm-2">Status</th>
+                    <th class="col-sm-1">Update</th>
+                    <th class="col-sm-1">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for todolist in todolists %}
+                        {% if todolist.completed %}
+                            <tr class="row text-center table-dark" >
+                                <th class="col-sm-2 ">{{todolist.date}}</th>
+                                <td class="col-sm-6"><a style="text-transform: uppercase; text-decoration: none; color: black; font-size: 1.1em;" href="{% url 'completed' todolist.id %}">{{todolist.activity}}</a></td>
+                                <td class="col-sm-2">completed</td>
+                                <td class="col-sm-1"> <a href="{% url 'edit' todolist.id %}"> <button class="btn btn-secondary">Edit</button></a></td>
+                                <td class="col-sm-1"><a href="{% url 'delete' todolist.id %}"> <button class="btn btn-danger">Delete</button></a></td>
+
+                            </tr>
+                        {% else %}
+                            <tr class="row text-center" >
+                                <th class="col-sm-2">{{todolist.date}}</th>
+                                <td class="col-sm-6"><a style="text-transform: uppercase; text-decoration: none; color: black; font-size: 1.1em;" href="{% url 'completed' todolist.id %}">{{todolist.activity}}</a></td>
+                                <td class="col-sm-2">Pending</td>
+                                <td class="col-sm-1"><a href="{% url 'edit' todolist.id %}"><button class="btn btn-secondary">Edit</button></a></td>
+                                <td class="col-sm-1"> <a href="{% url 'delete' todolist.id %}"><button class="btn btn-danger">Delete</button></a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    {% if todolists.paginator %}
+    <nav aria-label="Page navigation example" style="margin-right: 100px;">
+        <ul class="pagination justify-content-end mr-10">
+        {% if todolists.has_previous %}
+          <li class="page-item ">
+            <a class="page-link" href="?page={{todolists.previous_page_number}}" tabindex="-1">First</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="?page={{todolists.previous_page_number}}">Previous</a></li>
+        {% endif %}
+
+        {% for num in todolists.paginator.page_range %}
+
+            {% if todolists.number == num %}
+                <li class="page-item active"><a class="page-link" href="?page={{todolists.number}}">{{todolists.number}}</a></li>
+            {% elif num > todolists.number|add:'-3' and num < todolists.number|add:'3' %} 
+                <li class="page-item"><a class="page-link" href="?page={{num}}">{{num}}</a></li>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if todolists.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{todolists.next_page_number}}">Next</a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="?page={{todolists.paginator.num_pages}}">Last</a>
+            </li>
+        {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+{% endblock content %}
